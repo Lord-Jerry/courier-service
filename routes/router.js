@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const validator = require('../middlewares/validator');
+// eslint-disable-next-line no-unused-vars
 const authenticate = require('../middlewares/authentication');
 const authController = require('../controllers/auth');
 

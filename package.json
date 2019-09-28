@@ -29,7 +29,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "test": "mocha tests/*.js --timeout 10000 --exit"
+    "test": "mocha tests/*.js --exit"
   },
   "keywords": [],
   "author": "",

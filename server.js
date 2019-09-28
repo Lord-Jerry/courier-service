@@ -7,7 +7,12 @@ const errorHandler = require('./middlewares/errorhandler');
 const router = require('./routes/router');
 
 // set web server port according to environment
-const port = 8080 || process.env.PORT;
+const port = () => {
+  if (process.env.NODE_ENV === 'test') {
+    return 4000;
+  }
+  return process.env.PORT || 8080;
+};
 
 // load configuration file
 dotenv.config();
@@ -39,6 +44,6 @@ app.use((_req, res) => {
 // set web server port
 app.listen(port, () => {
   /* eslint-disable no-console */
-  console.log(`server started at port ${port}`);
+  console.log(`server started at port ${port()}`);
 });
 module.exports = app;

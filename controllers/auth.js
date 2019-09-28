@@ -2,8 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Users } = require('../models');
 
-console.log(Users, typeof Users);
-
 class Auth {
   /**
    * create user account
