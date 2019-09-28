@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
+process.env.NODE_ENV = 'test';
 const chai = require('chai');
 // const { expect, done } = require('chai');
 const chaiHttp = require('chai-http');
@@ -9,7 +10,6 @@ const server = require('../server');
 const { Users } = require('../models');
 
 const url = '/api/v1/login';
-process.env.NODE_ENV = 'test';
 const hash = bcrypt.hashSync;
 
 chai.use(chaiHttp);

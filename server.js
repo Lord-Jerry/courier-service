@@ -42,7 +42,7 @@ app.use((_req, res) => {
 });
 
 // set web server port
-app.listen(port, () => {
+app.listen(port(), () => {
   /* eslint-disable no-console */
   console.log(`server started at port ${port()}`);
 });

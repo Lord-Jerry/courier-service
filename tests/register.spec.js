@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-undef */
+process.env.NODE_ENV = 'test';
 const chai = require('chai');
 // const { expect, done } = require('chai');
 const chaiHttp = require('chai-http');
@@ -9,7 +10,7 @@ const server = require('../server');
 const { Users } = require('../models');
 
 const url = '/api/v1/register';
-process.env.NODE_ENV = 'test';
+console.log(process.env.NODE_ENV);
 
 chai.use(chaiHttp);
 chai.should();
@@ -370,6 +371,25 @@ describe('User Registration', () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.message.should.be.equal('email already exists');
+        done();
+      });
+  });
+
+  it('check if registration works', (done) => {
+    chai.request(server)
+      .post(url)
+      .send({
+        firstname: faker.name.firstName(),
+        lastname: faker.name.lastName(),
+        username: faker.internet.userName(),
+        email: 'test@gmail.com',
+        gender: 'male',
+        password: 'test009',
+        password2: 'test009',
+      })
+      .end((err, res) => {
+        res.should.have.status(201);
+        res.body.message.should.be.equal('user account created successfully');
         done();
       });
   });

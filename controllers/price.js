@@ -52,6 +52,7 @@ class user {
     const result = await Users.findOne({
       email,
     });
+    console.log('login')
 
     if (!result) {
       const err = new Error();
