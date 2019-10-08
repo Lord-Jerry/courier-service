@@ -1,49 +1,31 @@
-const app = require('express')();
-const dotenv = require('dotenv');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const logger = require('morgan');
-const errorHandler = require('./middlewares/errorhandler');
-const router = require('./routes/router');
+import express from 'express';
+import db from './db';
 
-// set web server port according to environment
-const port = () => {
-  if (process.env.NODE_ENV === 'test') {
-    return 4000;
-  }
-  return process.env.PORT || 8080;
+const portOpts = {
+  development: 4000,
+  test: 5000
 };
 
-// load configuration file
-dotenv.config();
+const app = express();
+const { sequelize } = db;
+const port = portOpts[process.env.NODE_ENV];
 
-// parse incoming request
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: false
+}));
 
-// logger
-app.use(logger('dev'));
+const sequelizeOpts = {
+  development: {
+    force: false
+  },
+  test: {
+    force: true
+  }
+};
 
-// use cross origin module
-app.use(cors('*'));
-
-// set api routes
-app.use(router);
-
-// set error handler
-app.use(errorHandler);
-
-// 404 error
-app.use((_req, res) => {
-  res.status(404).json({
-    statusCode: 404,
-    message: 'api endpoint not found',
+sequelize.sync(sequelizeOpts[process.env.NODE_ENV]).then(() => {
+  app.listen(process.env.PORT || port, () => {
+    console.log(`Server running on port ${port}`);
   });
 });
-
-// set web server port
-app.listen(port(), () => {
-  /* eslint-disable no-console */
-  console.log(`server started at port ${port()}`);
-});
-module.exports = app;
